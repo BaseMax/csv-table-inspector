@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Table Inspector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 CSV Table Inspector</h1>
+            <p>Preview, sort, and analyze CSV files in-browser</p>
+        </header>
+
+        <div class="upload-section">
+            <label for="fileInput" class="file-label">
+                <span class="file-icon">📁</span>
+                <span class="file-text">Choose CSV File</span>
+            </label>
+            <input type="file" id="fileInput" accept=".csv" />
+            <span id="fileName" class="file-name"></span>
+        </div>
+
+        <div id="controls" class="controls hidden">
+            <div class="control-group">
+                <label for="filterColumn">Filter Column:</label>
+                <select id="filterColumn">
+                    <option value="">Select column...</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="filterValue">Filter Value:</label>
+                <input type="text" id="filterValue" placeholder="Enter filter text..." />
+            </div>
+            <div class="control-group">
+                <button id="applyFilter" class="btn btn-primary">Apply Filter</button>
+                <button id="clearFilter" class="btn btn-secondary">Clear Filter</button>
+            </div>
+            <div class="control-group export-group">
+                <button id="exportCSV" class="btn btn-success">Export as CSV</button>
+                <button id="exportJSON" class="btn btn-success">Export as JSON</button>
+                <button id="showStats" class="btn btn-info">Show Column Stats</button>
+            </div>
+        </div>
+
+        <div id="statsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Column Statistics</h2>
+                    <button id="closeStats" class="close-btn">&times;</button>
+                </div>
+                <div id="statsContent" class="stats-content">
+                </div>
+            </div>
+        </div>
+
+        <div id="tableContainer" class="table-container hidden">
+            <div class="table-info">
+                <span id="rowCount">0 rows</span>
+                <span class="separator">|</span>
+                <span id="columnCount">0 columns</span>
+            </div>
+            <div class="table-wrapper">
+                <table id="dataTable">
+                    <thead id="tableHead"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
