@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Table Inspector - Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 CSV Table Inspector - Demo</h1>
+            <p>Preview, sort, and analyze CSV files in-browser</p>
+        </header>
+
+        <div class="upload-section">
+            <label for="fileInput" class="file-label">
+                <span class="file-icon">📁</span>
+                <span class="file-text">Choose CSV File</span>
+            </label>
+            <input type="file" id="fileInput" accept=".csv" />
+            <span id="fileName" class="file-name"></span>
+            <div style="margin-top: 15px;">
+                <button id="loadDemo" class="btn btn-info" style="padding: 12px 24px;">Load Demo Data</button>
+            </div>
+        </div>
+
+        <div id="controls" class="controls hidden">
+            <div class="control-group">
+                <label for="filterColumn">Filter Column:</label>
+                <select id="filterColumn">
+                    <option value="">Select column...</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="filterValue">Filter Value:</label>
+                <input type="text" id="filterValue" placeholder="Enter filter text..." />
+            </div>
+            <div class="control-group">
+                <button id="applyFilter" class="btn btn-primary">Apply Filter</button>
+                <button id="clearFilter" class="btn btn-secondary">Clear Filter</button>
+            </div>
+            <div class="control-group export-group">
+                <button id="exportCSV" class="btn btn-success">Export as CSV</button>
+                <button id="exportJSON" class="btn btn-success">Export as JSON</button>
+                <button id="showStats" class="btn btn-info">Show Column Stats</button>
+            </div>
+        </div>
+
+        <div id="statsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Column Statistics</h2>
+                    <button id="closeStats" class="close-btn">&times;</button>
+                </div>
+                <div id="statsContent" class="stats-content">
+                </div>
+            </div>
+        </div>
+
+        <div id="tableContainer" class="table-container hidden">
+            <div class="table-info">
+                <span id="rowCount">0 rows</span>
+                <span class="separator">|</span>
+                <span id="columnCount">0 columns</span>
+            </div>
+            <div class="table-wrapper">
+                <table id="dataTable">
+                    <thead id="tableHead"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Add demo data functionality
+        document.getElementById('loadDemo').addEventListener('click', () => {
+            const demoCSV = `Name,Age,Department,Salary,Location,Years
+John Doe,32,Engineering,85000,New York,5
+Jane Smith,28,Marketing,72000,San Francisco,3
+Bob Johnson,45,Sales,95000,Chicago,12
+Alice Williams,35,Engineering,92000,Seattle,7
+Charlie Brown,29,Marketing,68000,Boston,2
+David Lee,41,Engineering,98000,Austin,10
+Emma Davis,33,Sales,78000,New York,6
+Frank Miller,38,Engineering,88000,San Francisco,8
+Grace Wilson,26,Marketing,65000,Chicago,1
+Henry Taylor,44,Sales,102000,Seattle,15
+Sarah Anderson,30,Engineering,79000,Austin,4
+Michael Chen,37,Marketing,74000,Boston,9
+Laura Martinez,31,Sales,83000,New York,5
+Robert Kim,42,Engineering,96000,Seattle,11
+Jennifer Lopez,27,Marketing,67000,San Francisco,2`;
+            
+            document.getElementById('fileName').textContent = 'demo-data.csv';
+            app.parseCSV(demoCSV);
+        });
+    </script>
+</body>
+</html>
