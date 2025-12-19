@@ -2,7 +2,13 @@
 
 A powerful client-side CSV viewer that runs entirely in your browser without any backend. Load, analyze, sort, filter, and export CSV files with ease.
 
-![CSV Table Inspector](https://github.com/user-attachments/assets/eeb0a24c-7ba3-43c3-ae6e-31d1f1394683)
+![CSV Table Inspector](preview/1.png)
+
+![CSV Table Inspector](preview/2.png)
+
+![CSV Table Inspector](preview/3.png)
+
+![CSV Table Inspector](preview/4.png)
 
 ## Features
 
