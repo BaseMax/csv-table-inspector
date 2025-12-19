@@ -323,8 +323,11 @@ class CSVInspector {
             'Count': data.length,
             'Unique': new Set(data).size,
             'Empty': data.filter(v => {
-                if (!v) return true;
+                // Treat null and undefined as empty
+                if (v == null) return true;
+                // For strings, check if empty after trimming
                 if (typeof v === 'string') return v.trim() === '';
+                // Numbers (including 0) and booleans are not considered empty
                 return false;
             }).length
         };
@@ -356,7 +359,9 @@ class CSVInspector {
         // Find most common value
         const frequency = {};
         data.forEach(value => {
-            frequency[value] = (frequency[value] || 0) + 1;
+            // Convert null/undefined to string representation for consistent counting
+            const key = value == null ? String(value) : value;
+            frequency[key] = (frequency[key] || 0) + 1;
         });
         
         const mostCommon = Object.entries(frequency).sort((a, b) => b[1] - a[1])[0];
