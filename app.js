@@ -201,7 +201,8 @@ class CSVInspector {
         }
 
         this.filteredData = this.data.filter(row => {
-            return row[column].toLowerCase().includes(value);
+            const cellValue = row[column];
+            return cellValue != null && String(cellValue).toLowerCase().includes(value);
         });
 
         this.renderTable();
@@ -248,10 +249,15 @@ class CSVInspector {
     }
 
     escapeCSV(value) {
-        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-            return `"${value.replace(/"/g, '""')}"`;
+        // Handle null, undefined, and non-string values
+        if (value == null) {
+            return '';
         }
-        return value;
+        const strValue = String(value);
+        if (strValue.includes(',') || strValue.includes('"') || strValue.includes('\n')) {
+            return `"${strValue.replace(/"/g, '""')}"`;
+        }
+        return strValue;
     }
 
     downloadFile(content, filename, mimeType) {
@@ -316,7 +322,11 @@ class CSVInspector {
         const stats = {
             'Count': data.length,
             'Unique': new Set(data).size,
-            'Empty': data.filter(v => !v || v.trim() === '').length
+            'Empty': data.filter(v => {
+                if (!v) return true;
+                if (typeof v === 'string') return v.trim() === '';
+                return false;
+            }).length
         };
 
         // Try to calculate numeric statistics
@@ -324,10 +334,23 @@ class CSVInspector {
         
         if (numericData.length > 0) {
             stats['Numeric Count'] = numericData.length;
-            stats['Min'] = Math.min(...numericData).toFixed(2);
-            stats['Max'] = Math.max(...numericData).toFixed(2);
-            stats['Average'] = (numericData.reduce((a, b) => a + b, 0) / numericData.length).toFixed(2);
-            stats['Sum'] = numericData.reduce((a, b) => a + b, 0).toFixed(2);
+            
+            // Use loop-based approach for large arrays to avoid stack overflow
+            let min = numericData[0];
+            let max = numericData[0];
+            let sum = 0;
+            
+            for (let i = 0; i < numericData.length; i++) {
+                const val = numericData[i];
+                if (val < min) min = val;
+                if (val > max) max = val;
+                sum += val;
+            }
+            
+            stats['Min'] = min.toFixed(2);
+            stats['Max'] = max.toFixed(2);
+            stats['Average'] = (sum / numericData.length).toFixed(2);
+            stats['Sum'] = sum.toFixed(2);
         }
 
         // Find most common value
